@@ -1,5 +1,5 @@
 import axios from "axios";
-// import swal from "sweetalert2";
+import Swal from "sweetalert2";
 
 export const login = (fields) => (dispatch) => {
   axios
@@ -7,6 +7,30 @@ export const login = (fields) => (dispatch) => {
     .then((res) => {
       const ResponseAPI = res?.data?.data;
       dispatch({ type: "LOGIN", payload: ResponseAPI });
+      if (ResponseAPI.message === "Login Successful") {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: ResponseAPI?.message,
+        });
+      }
     })
-    .catch((err) => dispatch({ type: "ERRORLOGIN", payload: err?.response }));
+    .catch((err) => {
+      const ResponseError = err?.response;
+      console.log("err", ResponseError);
+      dispatch({ type: "ERRORLOGIN", payload: ResponseError });
+      if (ResponseError.status === 429) {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: ResponseError.data,
+        });
+      } else if (ResponseError.status === 400) {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: ResponseError.data?.data?.message,
+        });
+      }
+    });
 };
