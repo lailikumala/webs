@@ -1,7 +1,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export const login = (fields) => (dispatch) => {
+export const login = (fields, navigate) => (dispatch) => {
   axios
     .post(`http://localhost:5000/api/v1/auth/login`, fields)
     .then((res) => {
@@ -13,6 +13,7 @@ export const login = (fields) => (dispatch) => {
           title: "Success",
           text: ResponseAPI?.message,
         });
+        navigate("/home");
       }
     })
     .catch((err) => {
@@ -33,4 +34,10 @@ export const login = (fields) => (dispatch) => {
         });
       }
     });
+};
+
+export const AuthLogout = () => {
+  return {
+    type: "LOGOUT",
+  };
 };

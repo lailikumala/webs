@@ -19,6 +19,14 @@ const Auth = (state = initialState, action = {}) => {
         isLogin: false,
         error: action.payload,
       };
+    case "LOGOUT":
+      return {
+        ...state,
+        loading: false,
+        isLogin: false,
+        data: [],
+        _persist: { rehydrated: true, version: -1 },
+      };
     default:
       return state;
   }

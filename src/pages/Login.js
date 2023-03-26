@@ -1,20 +1,32 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { login } from "../redux/actions/auth";
 
 const Login = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { isLogin } = useSelector((state) => state.Auth);
+
+  useEffect(() => {
+    if (isLogin) {
+      navigate("/home");
+    }
+  }, [isLogin]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email && password) {
       dispatch(
-        login({
-          email: email,
-          password: password,
-        })
+        login(
+          {
+            email: email,
+            password: password,
+          },
+          navigate
+        )
       );
     }
   };
