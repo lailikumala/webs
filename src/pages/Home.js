@@ -7,7 +7,8 @@ import Swal from "sweetalert2";
 
 const Home = () => {
   const { data } = useSelector((state) => state.Content);
-  const { isLogin } = useSelector((state) => state.Auth);
+  const { isLogin, data: Auth } = useSelector((state) => state.Auth);
+  const token = Auth?.data?.token;
   const dispatch = useDispatch();
 
   const logout = () => {
@@ -36,11 +37,10 @@ const Home = () => {
   useEffect(() => {
     dispatch(
       listContent({
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY3OTc4MzM1OX0.0FIOZIjaAxfXRaKHXi5yUr_sAu1JdqX_gEU8pXUgbKE",
+        token: token,
       })
     );
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   return (
     <div>
